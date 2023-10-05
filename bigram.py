@@ -4,6 +4,18 @@ import torch.nn as nn
 from torch.nn import functional as F
 torch.manual_seed(1337)
 
+"""Hyperparameters"""
+"""Number of independent sequences we can process in parallel"""
+batch_size = 32
+"""Maximum context length for predictions"""
+block_size = 8
+max_iters = 3000
+eval_interval = 300
+learning_rate = 1e-2
+"""Use a GPU if you have one available"""
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+eval_iters = 200
+
 """Download Shakespeare training dataset"""
 # wget https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt
 
@@ -98,6 +110,8 @@ def get_batch(split:str):
 	"""Converted x and y to tuples in order to avoid an error in the next cell"""
 	x = torch.stack(tuple(data[point:point + block_size] for point in rand_starting_points))
 	y = torch.stack(tuple(data[point + 1:point + block_size + 1] for point in rand_starting_points))
+	"""When device becomes cuda, send x and y to it"""
+	x, y = x.to(device), y.to(device)
 	return x, y
 
 xbatch, ybatch = get_batch('train')
@@ -177,6 +191,8 @@ A bigram means predicting one character from another. We're only using the last 
 """
 
 model = BigramLanguageModel(vocab_size)
+device_model = model.to(device)
+
 """Output is the logits for each of the 4 x 8 positions and the loss"""
 logits, loss = model(xbatch, ybatch)
 print(f'Shape of logits tensor: {logits.shape}')
@@ -215,6 +231,8 @@ for steps in range(10000):
 
 print(f'Loss after 10000 iterations: {loss.item():.3f}')
 
+"""Generate new text"""
+context = torch.zeros((1, 1), dtype=torch.long, device=device)
 result = decode(model.generate(idx = torch.zeros((1, 1), dtype=torch.long), max_new_tokens=400)[0].tolist())
 print(result)
 
