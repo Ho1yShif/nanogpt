@@ -192,11 +192,6 @@ class BigramLanguageModel(nn.Module):
 			idx = torch.cat((idx, idx_next), dim=1)
 		return idx
 
-"""
-Why this architecture is silly: <br>
-A bigram means predicting one character from another. We're only using the last character to predict the next one, but we're still feeding the model the entire context on each iteration
-"""
-
 model = BigramLanguageModel(vocab_size)
 device_model = model.to(device)
 
