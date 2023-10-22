@@ -19,7 +19,10 @@ eval_iters = 200
 """Download Shakespeare training dataset"""
 # wget https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt
 
-"""Read Shakespeare file"""
+"""
+Read Shakespeare file
+Command: wget https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt
+"""
 with open('input.txt', 'r', encoding='utf-8') as file:
 	text = file.read()
 
