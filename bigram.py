@@ -39,10 +39,6 @@ encode = lambda string: [string_to_int[char] for char in string]
 """Takes a list of integers as input and outputs string"""
 decode = lambda integers: ''.join([int_to_string[idx] for idx in integers])
 
-
-print(encode('test'))
-print(decode(encode('test')))
-
 """Data Storage"""
 
 """Encode entire text and store in a toch tensor"""
