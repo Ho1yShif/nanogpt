@@ -28,12 +28,8 @@ with open('input.txt', 'r', encoding='utf-8') as file:
 
 unique_chars = sorted(list(set(text)))
 vocab_size = len(unique_chars)
-print(f'The Shakespeare file has {vocab_size} unique characters')
-str_chars = ''.join(unique_chars)
-print(f'Vocabulary: {str_chars}')
 
 """Tokenization"""
-
 """Map characters to integers"""
 string_to_int = {char: idx for idx, char in enumerate(unique_chars)}
 int_to_string = {idx: char for idx, char in enumerate(unique_chars)}
