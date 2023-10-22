@@ -218,10 +218,16 @@ device_model = model.to(device)
 """We can get away with a high learning rate since we're using a small network"""
 optimizer = torch.optim.AdamW(model.parameters(), lr=1e-3)
 
-batch_size = 32
-for steps in range(10000):
+# batch_size = 32
+for iter in range(max_iters):
+	"""Every once in a while, evaluate the loss on train and val sets"""
+	if iter % eval_interval == 0:
+		losses = estimate_loss()
+		"""May need to change this to output"""
+		print(f'Iteration {iter}: Training Loss: {losses['train']:.4f]}; Validation Loss: {losses['val']:.4f]}')
 	"""Sample data"""
 	xbatch, ybatch = get_batch('train')
+
 
 	"""Forward pass and evaluate loss"""
 	logits, loss = model(xbatch, ybatch)
