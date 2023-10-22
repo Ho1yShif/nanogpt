@@ -258,4 +258,4 @@ context = torch.zeros((1, 1), dtype=torch.long, device=device)
 result = decode(model.generate(idx = torch.zeros((1, 1), dtype=torch.long), max_new_tokens=400)[0].tolist())
 print(result)
 
-"""New result is still nonsense but also a dramatic improvement from the untrained model|"""
+"""New result is still nonsense but also a dramatic improvement from the untrained model"""
