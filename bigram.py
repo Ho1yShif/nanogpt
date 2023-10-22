@@ -109,7 +109,7 @@ def estimate_loss():
 	"""
 	model.eval()
 	for split in ['train', 'val']:
-		losses = torch.zero(eval_iters)
+		losses = torch.zeros(eval_iters)
 		for iter in range(eval_iters):
 			X, Y = get_batch(split)
 			logits, loss = model(X, Y)
@@ -224,7 +224,7 @@ for iter in range(max_iters):
 	if iter % eval_interval == 0:
 		losses = estimate_loss()
 		"""May need to change this to output"""
-		print(f'Iteration {iter}: Training Loss: {losses['train']:.4f]}; Validation Loss: {losses['val']:.4f]}')
+		print(f"Iteration {iter}: Training Loss: {losses['train']:.4f}; Validation Loss: {losses['val']:.4f}")
 
 	"""Sample data"""
 	xbatch, ybatch = get_batch('train')
