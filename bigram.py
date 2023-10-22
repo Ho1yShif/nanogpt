@@ -26,11 +26,6 @@ Command: wget https://raw.githubusercontent.com/karpathy/char-rnn/master/data/ti
 with open('input.txt', 'r', encoding='utf-8') as file:
 	text = file.read()
 
-print(f'The Shakespeare file has {len(text):,} characters')
-
-"""Print first 1K characters"""
-print(text[:1000])
-
 unique_chars = sorted(list(set(text)))
 vocab_size = len(unique_chars)
 print(f'The Shakespeare file has {vocab_size} unique characters')
