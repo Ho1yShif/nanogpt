@@ -16,9 +16,6 @@ learning_rate = 1e-2
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 eval_iters = 200
 
-"""Download Shakespeare training dataset"""
-# wget https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt
-
 """
 Read Shakespeare file
 Command: wget https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt
@@ -47,38 +44,6 @@ data = torch.tensor(encode(text), dtype=torch.long)
 n = int(len(data) * 0.9)
 train_data = data[:n]
 val_data = data[n:]
-
-# """
-# Chunking
-# - Split training data into sampled chunks with a block size (token length) of 8
-# - For a block size of 8, we actually need 9 chars because the sample is the next predicted char, and we need some context for the next prediction. So, to predict 8 times, we need 9 chars
-# """
-
-# block_size = 8
-# train_data[:block_size + 1]
-
-# """
-# Here, X are the input characters and y are the target characters
-# Again, we need to offset by 1 for the targets so that the model has some context to predict from
-# """
-# x = train_data[:block_size]
-# y = train_data[1:block_size + 1]
-
-
-# for t in range(block_size):
-# 	"""Context is always the characters in x up to and including t"""
-# 	context = x[:t + 1]
-# 	target = y[t]
-# 	print(f'When input is {context}, target is {target}')
-
-# """
-# Batching and Blocking
-# - Batch size is the number of independent sequences we want to process in parallel on every forward-backward pass of the transformer
-# - Block size is the maximum content length in tokens used to make predictions
-# """
-
-# batch_size = 4
-# block_size = 8
 
 def get_batch(split:str):
 	"""The function generates a small batch of data: inputs x and targets y"""
@@ -121,29 +86,7 @@ def estimate_loss():
 	model.train()
 	return out
 
-# xbatch, ybatch = get_batch('train')
-
-# print('Inputs:')
-# print(xbatch.shape)
-# print(xbatch)
-
-# print('Targets:')
-# print(ybatch.shape)
-# print(ybatch)
-
-# The tensor area (4 x 8) is the number of examples contained in the array. The above consists of 32 independent examples, from the transformer's perspective.
-
-# for batch in range(batch_size):
-# 	print(f'Chunk {batch + 1}')
-# 	for time in range(block_size):
-# 		context = xbatch[batch, :time + 1]
-# 		target = ybatch[batch, time]
-# 		print(f'When input is {context.tolist()}, target is {target}')
-
-# ## Baseline: Bigram Language Model
-# Predicts probability of the next token in a sequence given the previous token. It is called a "bigram" model because it considers pairs of adjacent words in the sequence. The model is trained on a corpus of text and learns the probability distribution of words in the corpus. The model can then be used to generate new text by sampling from the learned distribution.
-
-
+"""Simplified Bigram Model"""
 class BigramLanguageModel(nn.Module):
 
 	def __init__(self, vocab_size):
@@ -195,30 +138,9 @@ class BigramLanguageModel(nn.Module):
 model = BigramLanguageModel(vocab_size)
 device_model = model.to(device)
 
-# """Output is the logits for each of the 4 x 8 positions and the loss"""
-# logits, loss = model(xbatch, ybatch)
-# print(f'Shape of logits tensor: {logits.shape}')
-# print(f'Loss: {loss:.3f}')
-
-# """
-# Since we're using a mathematical negative log loss function, we can estimate the ideal loss using our vocabulary size. <br>
-# Ideally, we want a loss of `-ln(1/65) = ~4.17`
-# """
-
-# """
-# Supply a tensor of zeros as the initial idx context
-# In vocab, zero represents a newline character, so it makes sense to start here
-# Predict 100 tokens, pull out the first sequence, which is a 1D array of all indices, and convert to a list
-# """
-# result = decode(model.generate(idx = torch.zeros((1, 1), dtype=torch.long), max_new_tokens=100)[0].tolist())
-# print(result)
-
 """Train Bigram Model"""
-
-"""We can get away with a high learning rate since we're using a small network"""
 optimizer = torch.optim.AdamW(model.parameters(), lr=1e-3)
 
-# batch_size = 32
 for iter in range(max_iters):
 	"""Every once in a while, evaluate the loss on train and val sets"""
 	if iter % eval_interval == 0:
