@@ -133,12 +133,12 @@ def estimate_loss():
 
 # The tensor area (4 x 8) is the number of examples contained in the array. The above consists of 32 independent examples, from the transformer's perspective.
 
-for batch in range(batch_size):
-	print(f'Chunk {batch + 1}')
-	for time in range(block_size):
-		context = xbatch[batch, :time + 1]
-		target = ybatch[batch, time]
-		print(f'When input is {context.tolist()}, target is {target}')
+# for batch in range(batch_size):
+# 	print(f'Chunk {batch + 1}')
+# 	for time in range(block_size):
+# 		context = xbatch[batch, :time + 1]
+# 		target = ybatch[batch, time]
+# 		print(f'When input is {context.tolist()}, target is {target}')
 
 # ## Baseline: Bigram Language Model
 # Predicts probability of the next token in a sequence given the previous token. It is called a "bigram" model because it considers pairs of adjacent words in the sequence. The model is trained on a corpus of text and learns the probability distribution of words in the corpus. The model can then be used to generate new text by sampling from the learned distribution.
