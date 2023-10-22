@@ -58,28 +58,28 @@ block_size = 8
 train_data[:block_size + 1]
 
 
-"""
-Here, X are the input characters and y are the target characters
-Again, we need to offset by 1 for the targets so that the model has some context to predict from
-"""
-x = train_data[:block_size]
-y = train_data[1:block_size + 1]
+# """
+# Here, X are the input characters and y are the target characters
+# Again, we need to offset by 1 for the targets so that the model has some context to predict from
+# """
+# x = train_data[:block_size]
+# y = train_data[1:block_size + 1]
 
 
-for t in range(block_size):
-	"""Context is always the characters in x up to and including t"""
-	context = x[:t + 1]
-	target = y[t]
-	print(f'When input is {context}, target is {target}')
+# for t in range(block_size):
+# 	"""Context is always the characters in x up to and including t"""
+# 	context = x[:t + 1]
+# 	target = y[t]
+# 	print(f'When input is {context}, target is {target}')
 
-"""
-Batching and Blocking
-- Batch size is the number of independent sequences we want to process in parallel on every forward-backward pass of the transformer
-- Block size is the maximum content length in tokens used to make predictions
-"""
+# """
+# Batching and Blocking
+# - Batch size is the number of independent sequences we want to process in parallel on every forward-backward pass of the transformer
+# - Block size is the maximum content length in tokens used to make predictions
+# """
 
-batch_size = 4
-block_size = 8
+# batch_size = 4
+# block_size = 8
 
 def get_batch(split:str):
 	"""The function generates a small batch of data: inputs x and targets y"""
