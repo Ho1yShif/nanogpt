@@ -48,15 +48,14 @@ n = int(len(data) * 0.9)
 train_data = data[:n]
 val_data = data[n:]
 
-"""
-Chunking
-- Split training data into sampled chunks with a block size (token length) of 8
-- For a block size of 8, we actually need 9 chars because the sample is the next predicted char, and we need some context for the next prediction. So, to predict 8 times, we need 9 chars
-"""
+# """
+# Chunking
+# - Split training data into sampled chunks with a block size (token length) of 8
+# - For a block size of 8, we actually need 9 chars because the sample is the next predicted char, and we need some context for the next prediction. So, to predict 8 times, we need 9 chars
+# """
 
-block_size = 8
-train_data[:block_size + 1]
-
+# block_size = 8
+# train_data[:block_size + 1]
 
 # """
 # Here, X are the input characters and y are the target characters
