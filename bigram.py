@@ -148,7 +148,7 @@ class BigramLanguageModel(nn.Module):
 
 	def __init__(self, vocab_size):
 		super().__init__()
-		"""Each token reads the logits for the next token using a lookup table of embeddings"""
+		"""Each token directly reads the logits for the next token using a lookup table of embeddings"""
 		self.token_embedding_table = nn.Embedding(vocab_size, vocab_size)
 
 	def forward(self, idx, targets=None):
