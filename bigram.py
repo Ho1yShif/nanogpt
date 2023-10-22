@@ -195,23 +195,23 @@ class BigramLanguageModel(nn.Module):
 model = BigramLanguageModel(vocab_size)
 device_model = model.to(device)
 
-"""Output is the logits for each of the 4 x 8 positions and the loss"""
-logits, loss = model(xbatch, ybatch)
-print(f'Shape of logits tensor: {logits.shape}')
-print(f'Loss: {loss:.3f}')
+# """Output is the logits for each of the 4 x 8 positions and the loss"""
+# logits, loss = model(xbatch, ybatch)
+# print(f'Shape of logits tensor: {logits.shape}')
+# print(f'Loss: {loss:.3f}')
 
-"""
-Since we're using a mathematical negative log loss function, we can estimate the ideal loss using our vocabulary size. <br>
-Ideally, we want a loss of `-ln(1/65) = ~4.17`
-"""
+# """
+# Since we're using a mathematical negative log loss function, we can estimate the ideal loss using our vocabulary size. <br>
+# Ideally, we want a loss of `-ln(1/65) = ~4.17`
+# """
 
-"""
-Supply a tensor of zeros as the initial idx context
-In vocab, zero represents a newline character, so it makes sense to start here
-Predict 100 tokens, pull out the first sequence, which is a 1D array of all indices, and convert to a list
-"""
-result = decode(model.generate(idx = torch.zeros((1, 1), dtype=torch.long), max_new_tokens=100)[0].tolist())
-print(result)
+# """
+# Supply a tensor of zeros as the initial idx context
+# In vocab, zero represents a newline character, so it makes sense to start here
+# Predict 100 tokens, pull out the first sequence, which is a 1D array of all indices, and convert to a list
+# """
+# result = decode(model.generate(idx = torch.zeros((1, 1), dtype=torch.long), max_new_tokens=100)[0].tolist())
+# print(result)
 
 """Train Bigram Model"""
 
