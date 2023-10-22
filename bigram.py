@@ -114,9 +114,14 @@ def get_batch(split:str):
 	x, y = x.to(device), y.to(device)
 	return x, y
 
+"""Tells PyTorch that we don't intend to do backprop here"""
 @torch.no_grad()
 def estimate_loss():
 	out = {}
+	"""
+	Set model to evaluation phase
+	Although there's no real difference between these phases for this model, it's good practice to do this
+	"""
 	model.eval()
 	for split in ['train', 'val']:
 		losses = torch.zero(eval_iters)
@@ -127,6 +132,7 @@ def estimate_loss():
 			losses[iter] = loss.item()
 		"""Store mean loss for each split"""
 		out[split] = losses.mean()
+	"""Set model to training phase"""
 	model.train()
 	return out
 
