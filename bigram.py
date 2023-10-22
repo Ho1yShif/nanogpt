@@ -225,10 +225,9 @@ for iter in range(max_iters):
 		losses = estimate_loss()
 		"""May need to change this to output"""
 		print(f'Iteration {iter}: Training Loss: {losses['train']:.4f]}; Validation Loss: {losses['val']:.4f]}')
+
 	"""Sample data"""
 	xbatch, ybatch = get_batch('train')
-
-
 	"""Forward pass and evaluate loss"""
 	logits, loss = model(xbatch, ybatch)
 	optimizer.zero_grad(set_to_none=True)
@@ -237,11 +236,7 @@ for iter in range(max_iters):
 	"""Use gradients to update parameters"""
 	optimizer.step()
 
-print(f'Loss after 10000 iterations: {loss.item():.3f}')
-
 """Generate new text"""
 context = torch.zeros((1, 1), dtype=torch.long, device=device)
 result = decode(model.generate(idx = torch.zeros((1, 1), dtype=torch.long), max_new_tokens=400)[0].tolist())
 print(result)
-
-"""New result is still nonsense but also a dramatic improvement from the untrained model"""
