@@ -40,12 +40,8 @@ encode = lambda string: [string_to_int[char] for char in string]
 decode = lambda integers: ''.join([int_to_string[idx] for idx in integers])
 
 """Data Storage"""
-
 """Encode entire text and store in a toch tensor"""
 data = torch.tensor(encode(text), dtype=torch.long)
-print(data.shape, data.dtype)
-
-print(data[:100])
 
 """Split data into training (90%) and validation (10%)"""
 n = int(len(data) * 0.9)
