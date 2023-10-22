@@ -121,15 +121,15 @@ def estimate_loss():
 	model.train()
 	return out
 
-xbatch, ybatch = get_batch('train')
+# xbatch, ybatch = get_batch('train')
 
-print('Inputs:')
-print(xbatch.shape)
-print(xbatch)
+# print('Inputs:')
+# print(xbatch.shape)
+# print(xbatch)
 
-print('Targets:')
-print(ybatch.shape)
-print(ybatch)
+# print('Targets:')
+# print(ybatch.shape)
+# print(ybatch)
 
 # The tensor area (4 x 8) is the number of examples contained in the array. The above consists of 32 independent examples, from the transformer's perspective.
 
