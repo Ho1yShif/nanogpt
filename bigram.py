@@ -143,7 +143,10 @@ class BigramLanguageModel(nn.Module):
 		"""Generates new tokens given a context of existing tokens such that an array of (batch, time) indices becomes (batch, time + 1))"""
 		"""idx is (batch, time) array of indices in the current context"""
 		for _ in range(max_new_tokens):
-			"""Only use the last `block_size` tokens of `idx` to avoid index-out-of-range errors"""
+			"""
+			Only use the last `block_size` tokens of `idx` to avoid index-out-of-range errors
+			TODO: Find a better way to do this without sacrificing the context
+			"""
 			idx_block = idx[:, -block_size:]
 			"""
 			Get predictions
