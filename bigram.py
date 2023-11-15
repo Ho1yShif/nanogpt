@@ -199,7 +199,7 @@ print('Finished training')
 """Generate new text"""
 context = torch.zeros((1, 1), dtype=torch.long, device=device)
 print('Context generated')
-#result = decode(model.generate(idx = torch.zeros((1, 1), dtype=torch.long), max_new_tokens=500)[0].tolist())
+# result = decode(model.generate(idx = torch.zeros((1, 1), dtype=torch.long), max_new_tokens=500)[0].tolist())
 result = decode(model.generate(idx=context, max_new_tokens=500)[0].tolist())
 print('Bigram Language Model\'s Generated Text:')
 print(result)
