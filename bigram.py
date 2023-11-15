@@ -118,7 +118,10 @@ class BigramLanguageModel(nn.Module):
 		"""Position embedding table is a tensor of integers from 0 to (Time - 1) with dimensions (Time, Channel)"""
 		position_embeddings = self.position_embedding_table(torch.arange(time, device=device))
 
-		"""Add token and position embeddings for a tensor with dimensions (Batch, Time, Channel); here (4, 8, 32)"""
+		"""
+		Add token and position embeddings for a tensor with dimensions (Batch, Time, Channel); here (4, 8, 32)
+		Now, x holds the token identities and positions of each token in the input sequence
+		"""
 		x = token_embeddings + position_embeddings
 		"""Logits is a tensor with dimensions (Batch, Time, Channel); here (4, 8, 65) (Batch, Time, vocab_size)"""
 		logits = self.linear_model_head(x)
