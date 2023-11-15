@@ -99,7 +99,7 @@ class BigramLanguageModel(nn.Module):
 		"""Linear model will be used to go from token embeddings to logits for the next token"""
 		self.linear_model_head = nn.Linear(n_embeds, vocab_size)
 		"""
-		Why use embeddings and a linear layer here?
+		Why do we use embeddings and a linear layer here?
 
 		The embedding maps each token in the input sequence to a dense vector representation, which captures the semantic meaning of the token.
 		This dense representation is easier for the model to work with than the sparse one-hot encoded representation of the tokens.
@@ -137,7 +137,6 @@ class BigramLanguageModel(nn.Module):
 			logits = logits.view(batch * time, channel)
 			targets = targets.view(batch * time)
 			loss = F.cross_entropy(logits, targets)
-
 		return logits, loss
 
 	def generate(self, idx, max_new_tokens):
