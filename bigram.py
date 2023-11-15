@@ -93,12 +93,13 @@ class BigramLanguageModel(nn.Module):
 	def __init__(self):
 		super().__init__()
 		"""Instead of directly reads the logits for the next token using a lookup table of embeddings, go through an intermediate step first"""
-		self.token_embedding_table = nn.Embedding(vocab_size, n_embed)
+		self.token_embedding_table = nn.Embedding(vocab_size, n_embeds)
 
 	def forward(self, idx, targets=None):
 		"""idx and targets are both integer tensors with dimensions (Batch, Time); here (4, 8)"""
-		"""logits is a tensor with dimensions (Batch, Time, Channel); here (4, 8, 65)"""
-		logits = self.token_embedding_table(idx)
+		"""Embedding table is a tensor with dimensions (Vocabulary, Embedding); here (65, 32)"""
+		token_embeddings = self.token_embedding_table(idx)
+		"""Logits is a tensor with dimensions (Batch, Time, Channel); here (4, 8, 65)"""
 
 		if targets is None:
 			loss = None
