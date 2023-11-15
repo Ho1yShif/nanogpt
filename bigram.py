@@ -92,8 +92,10 @@ class BigramLanguageModel(nn.Module):
 
 	def __init__(self):
 		super().__init__()
-		"""Instead of directly reads the logits for the next token using a lookup table of embeddings, go through an intermediate step first"""
+		"""Instead of directly reading the logits for the next token using a lookup table, go through an embedding step first"""
 		self.token_embedding_table = nn.Embedding(vocab_size, n_embeds)
+		"""Embed each position from 0 to (block_size - 1)"""
+		self.position_embedding_table = nn.Embedding(block_size, n_embeds)
 		"""Linear model will be used to go from token embeddings to logits for the next token"""
 		self.linear_model_head = nn.Linear(n_embeds, vocab_size)
 		"""
@@ -108,11 +110,18 @@ class BigramLanguageModel(nn.Module):
 		"""
 
 	def forward(self, idx, targets=None):
+		batch, time = idx.shape
+
 		"""idx and targets are both integer tensors with dimensions (Batch, Time); here (4, 8)"""
-		"""Embedding table is a tensor with dimensions (Vocabulary, Embedding); here (65, 32)"""
+		"""Token embedding table is a tensor with dimensions (Vocabulary, Embedding); here (65, 32)"""
 		token_embeddings = self.token_embedding_table(idx)
+		"""Position embedding table is a tensor of integers from 0 to (Time - 1) with dimensions (Time, Channel)"""
+		position_embeddings = self.position_embedding_table(torch.arange(time, device=device))
+
+		"""Add token and position embeddings for a tensor with dimensions (Batch, Time, Channel); here (4, 8, 32)"""
+		x = token_embeddings + position_embeddings
 		"""Logits is a tensor with dimensions (Batch, Time, Channel); here (4, 8, 65) (Batch, Time, vocab_size)"""
-		logits = self.linear_model_head(token_embeddings)
+		logits = self.linear_model_head(x)
 
 		if targets is None:
 			loss = None
