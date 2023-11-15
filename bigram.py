@@ -110,12 +110,18 @@ class BigramLanguageModel(nn.Module):
 		"""
 
 	def forward(self, idx, targets=None):
+		"""
+		TODO Cole:
+		Fix index out of range error
+		Time var may be referring to the position within the entire batch space as opposed to the time within a single batch
+		Could also be a dimension/matrix multiplcation issue
+		"""
 		batch, time = idx.shape
 
 		"""idx and targets are both integer tensors with dimensions (Batch, Time); here (4, 8)"""
-		"""Token embedding table is a tensor with dimensions (Vocabulary, Embedding); here (65, 32)"""
+		"""Token embeddings table is a tensor with dimensions (Vocabulary, Embedding); here (65, 32)"""
 		token_embeddings = self.token_embedding_table(idx)
-		"""Position embedding table is a tensor of integers from 0 to (Time - 1) with dimensions (Time, Channel)"""
+		"""Position embeddings table is a tensor of integers from 0 to (Time - 1) with dimensions (Time, Channel)"""
 		position_embeddings = self.position_embedding_table(torch.arange(time, device=device))
 
 		"""
@@ -147,12 +153,15 @@ class BigramLanguageModel(nn.Module):
 			Only use the last `block_size` tokens of `idx` to avoid index-out-of-range errors
 			TODO: Find a better way to do this without sacrificing the context
 			"""
-			idx_block = idx[:, -block_size:]
+			# idx_block = idx[:, -block_size:]
+			# logits, loss = self(idx_block)
 			"""
-			Get predictions
-			Calling self this way invokes the forward method and supplies idx as an argument
+			Explaining the self(idx) syntactic sugar used to get predictions
+
+			In Python, self(idx) is a shorthand for calling a class's __call__ method with idx as an argument. In the context of PyTorch, which this code seems to be using, the __call__ method is typically overridden in the base nn.Module class to include some additional functionality and then call the forward method.
+			So, when you see self(idx), it's essentially calling the forward method of the class (along with any additional functionality provided by PyTorch's nn.Module's __call__ method). In this case, idx is being passed as an argument to the forward method.
 			"""
-			logits, loss = self(idx_block)
+			logits, loss = self(idx)
 			"""Focus only on the most recent time step and transform logits into an array of (Batch, Channel)"""
 			logits = logits[:, -1, :]
 			"""Apply softmax to get probabilities for each token in the vocabulary"""
@@ -166,6 +175,7 @@ class BigramLanguageModel(nn.Module):
 			idx = torch.cat((idx, idx_next), dim=1)
 		return idx
 
+"""Build model"""
 model = BigramLanguageModel()
 device_model = model.to(device)
 
@@ -176,7 +186,6 @@ for iter in range(max_iters):
 	"""Every once in a while, evaluate the loss on train and val sets"""
 	if iter % eval_interval == 0:
 		losses = estimate_loss()
-		"""May need to change this to output"""
 		print(f"Iteration {iter}: Training Loss: {losses['train']:.4f}; Validation Loss: {losses['val']:.4f}")
 	"""Sample data"""
 	xbatch, ybatch = get_batch('train')
@@ -189,6 +198,8 @@ print('Finished training')
 
 """Generate new text"""
 context = torch.zeros((1, 1), dtype=torch.long, device=device)
-result = decode(model.generate(idx = torch.zeros((1, 1), dtype=torch.long), max_new_tokens=500)[0].tolist())
+print('Context generated')
+#result = decode(model.generate(idx = torch.zeros((1, 1), dtype=torch.long), max_new_tokens=500)[0].tolist())
+result = decode(model.generate(idx=context, max_new_tokens=500)[0].tolist())
 print('Bigram Language Model\'s Generated Text:')
 print(result)
