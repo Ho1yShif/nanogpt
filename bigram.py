@@ -94,12 +94,25 @@ class BigramLanguageModel(nn.Module):
 		super().__init__()
 		"""Instead of directly reads the logits for the next token using a lookup table of embeddings, go through an intermediate step first"""
 		self.token_embedding_table = nn.Embedding(vocab_size, n_embeds)
+		"""Linear model will be used to go from token embeddings to logits for the next token"""
+		self.linear_model_head = nn.Linear(n_embeds, vocab_size)
+		"""
+		Why use embeddings and a linear layer here?
+
+		The embedding maps each token in the input sequence to a dense vector representation, which captures the semantic meaning of the token.
+		This dense representation is easier for the model to work with than the sparse one-hot encoded representation of the tokens.
+		The linear layer then takes the dense vector representation of each token and maps it to a probability distribution over the vocabulary,
+		which is used to predict the next token in the sequence.
+		The advantage of using these layers is that they allow the model to learn a more effective representation of the input sequence,
+		which can improve the accuracy of the model's predictions.
+		"""
 
 	def forward(self, idx, targets=None):
 		"""idx and targets are both integer tensors with dimensions (Batch, Time); here (4, 8)"""
 		"""Embedding table is a tensor with dimensions (Vocabulary, Embedding); here (65, 32)"""
 		token_embeddings = self.token_embedding_table(idx)
-		"""Logits is a tensor with dimensions (Batch, Time, Channel); here (4, 8, 65)"""
+		"""Logits is a tensor with dimensions (Batch, Time, Channel); here (4, 8, 65) (Batch, Time, vocab_size)"""
+		logits = self.linear_model_head(token_embeddings)
 
 		if targets is None:
 			loss = None
