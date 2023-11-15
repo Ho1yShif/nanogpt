@@ -15,6 +15,7 @@ learning_rate = 1e-2
 """Use a GPU if you have one available"""
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 eval_iters = 200
+n_embeds = 32
 
 """
 Read Shakespeare file
@@ -91,8 +92,8 @@ class BigramLanguageModel(nn.Module):
 
 	def __init__(self):
 		super().__init__()
-		"""Each token directly reads the logits for the next token using a lookup table of embeddings"""
-		self.token_embedding_table = nn.Embedding(vocab_size, vocab_size)
+		"""Instead of directly reads the logits for the next token using a lookup table of embeddings, go through an intermediate step first"""
+		self.token_embedding_table = nn.Embedding(vocab_size, n_embed)
 
 	def forward(self, idx, targets=None):
 		"""idx and targets are both integer tensors with dimensions (Batch, Time); here (4, 8)"""
