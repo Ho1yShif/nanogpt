@@ -143,11 +143,13 @@ class BigramLanguageModel(nn.Module):
 		"""Generates new tokens given a context of existing tokens such that an array of (batch, time) indices becomes (batch, time + 1))"""
 		"""idx is (batch, time) array of indices in the current context"""
 		for _ in range(max_new_tokens):
+			"""Only use the last `block_size` tokens of `idx` to avoid index-out-of-range errors"""
+			idx_block = idx[:, -block_size:]
 			"""
 			Get predictions
 			Calling self this way invokes the forward method and supplies idx as an argument
 			"""
-			logits, loss = self(idx)
+			logits, loss = self(idx_block)
 			"""Focus only on the most recent time step and transform logits into an array of (Batch, Channel)"""
 			logits = logits[:, -1, :]
 			"""Apply softmax to get probabilities for each token in the vocabulary"""
