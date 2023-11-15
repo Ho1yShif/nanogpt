@@ -112,6 +112,7 @@ class BigramLanguageModel(nn.Module):
 	def forward(self, idx, targets=None):
 		"""
 		TODO Cole:
+		Rename idx variable for ease of debugging
 		Fix index out of range error
 		Time var may be referring to the position within the entire batch space as opposed to the time within a single batch
 		Could also be a dimension/matrix multiplcation issue
