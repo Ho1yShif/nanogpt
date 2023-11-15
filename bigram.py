@@ -176,5 +176,5 @@ for iter in range(max_iters):
 """Generate new text"""
 context = torch.zeros((1, 1), dtype=torch.long, device=device)
 result = decode(model.generate(idx = torch.zeros((1, 1), dtype=torch.long), max_new_tokens=500)[0].tolist())
-print('Bigram Language Model Generated Text:')
+print('Bigram Language Model\'s Generated Text:')
 print(result)
