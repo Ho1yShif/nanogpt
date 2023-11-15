@@ -142,7 +142,7 @@ class BigramLanguageModel(nn.Module):
 	def generate(self, idx, max_new_tokens):
 		"""Generates new tokens given a context of existing tokens such that an array of (batch, time) indices becomes (batch, time + 1))"""
 		"""idx is (batch, time) array of indices in the current context"""
-		for _ in range (max_new_tokens):
+		for _ in range(max_new_tokens):
 			"""
 			Get predictions
 			Calling self this way invokes the forward method and supplies idx as an argument
@@ -173,16 +173,14 @@ for iter in range(max_iters):
 		losses = estimate_loss()
 		"""May need to change this to output"""
 		print(f"Iteration {iter}: Training Loss: {losses['train']:.4f}; Validation Loss: {losses['val']:.4f}")
-
 	"""Sample data"""
 	xbatch, ybatch = get_batch('train')
 	"""Forward pass and evaluate loss"""
 	logits, loss = model(xbatch, ybatch)
 	optimizer.zero_grad(set_to_none=True)
-	"""Backward pass to compute gradients"""
 	loss.backward()
-	"""Use gradients to update parameters"""
 	optimizer.step()
+print('Finished training')
 
 """Generate new text"""
 context = torch.zeros((1, 1), dtype=torch.long, device=device)
