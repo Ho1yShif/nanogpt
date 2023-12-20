@@ -1,3 +1,36 @@
+"""
+TODO
+
+Fix error
+Iteration 0: Training Loss: 4.4801; Validation Loss: 4.4801
+Iteration 300: Training Loss: 2.8827; Validation Loss: 2.9059
+Iteration 600: Training Loss: 2.6890; Validation Loss: 2.7210
+Iteration 900: Training Loss: 2.6000; Validation Loss: 2.6195
+Iteration 1200: Training Loss: 2.5720; Validation Loss: 2.5858
+Iteration 1500: Training Loss: 2.5365; Validation Loss: 2.5563
+Iteration 1800: Training Loss: 2.5250; Validation Loss: 2.5383
+Iteration 2100: Training Loss: 2.5161; Validation Loss: 2.5211
+Iteration 2400: Training Loss: 2.5057; Validation Loss: 2.5183
+Iteration 2700: Training Loss: 2.5127; Validation Loss: 2.5154
+Finished training
+Context generated
+Traceback (most recent call last):
+  File "/Users/shifra.isaacs/Documents/Repos/nanogpt/bigram.py", line 204, in <module>
+    result = decode(model.generate(idx=context, max_new_tokens=500)[0].tolist())
+  File "/Users/shifra.isaacs/Documents/Repos/nanogpt/bigram.py", line 165, in generate
+    logits, loss = self(idx)
+  File "/Users/shifra.isaacs/.virtualenvs/llm_venv/lib/python3.9/site-packages/torch/nn/mod
+ules/module.py", line 1501, in _call_impl                                                      return forward_call(*args, **kwargs)
+  File "/Users/shifra.isaacs/Documents/Repos/nanogpt/bigram.py", line 126, in forward
+    position_embeddings = self.position_embedding_table(torch.arange(time, device=device))
+  File "/Users/shifra.isaacs/.virtualenvs/llm_venv/lib/python3.9/site-packages/torch/nn/mod
+ules/module.py", line 1501, in _call_impl                                                      return forward_call(*args, **kwargs)
+  File "/Users/shifra.isaacs/.virtualenvs/llm_venv/lib/python3.9/site-packages/torch/nn/mod
+ules/sparse.py", line 162, in forward                                                          return F.embedding(
+  File "/Users/shifra.isaacs/.virtualenvs/llm_venv/lib/python3.9/site-packages/torch/nn/fun
+ctional.py", line 2210, in embedding                                                           return torch.embedding(weight, input, padding_idx, scale_grad_by_freq, sparse)
+IndexError: index out of range in self
+"""
 
 import torch
 import torch.nn as nn
